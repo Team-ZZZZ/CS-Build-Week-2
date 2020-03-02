@@ -47,7 +47,8 @@ def drop_item(item_name):
 
 
 def status():
-    response = requests.post(f"{base_url}status/", headers=headers)
+    response = requests.post(
+        f"{base_url}status/", headers=headers)
     json = response.json()
     print(response.text)
     return json
@@ -62,23 +63,24 @@ def wear_item(item_name):
 
 
 def undress_item(item_name):
-    response = requests.post(f"{base_url}undress/",
-                             headers=headers, json={"name": item_name})
+    response = requests.post(
+        f"{base_url}undress/", headers=headers, json={"name": item_name})
     json = response.json()
     print(response.text)
     return json
 
 
 def examine(name):
-    response = requests.post(f"{base_url}examine/",
-                             headers=headers, json={"name": name})
+    response = requests.post(
+        f"{base_url}examine/", headers=headers, json={"name": name})
     json = response.json()
     print(response.text)
     return json
 
 
 def pray():
-    response = request.post(f"{base_url}pray/", headers=headers)
+    response = request.post(
+        f"{base_url}pray/", headers=headers)
     json = response.json()
     print(response.text)
     return json
@@ -99,40 +101,45 @@ def fly(direction):
     print(response.text)
     return json
 
-# def dash(direction, num_rooms=None, next_room_ids=None):
-    # dictionary = {"direction": direction}
+def dash(direction, num_rooms=None, next_room_ids=None):
+    dictionary = {"direction": direction}
 
-    # if next_room_ids:
-    #     dictionary["next_room_ids"] = next_room_ids
+    if num_rooms > 1:
+        if next_room_ids:
+            dictionary["next_room_ids"] = next_room_ids
 
-    # response = requests.post(
-    #     f"{base_url}dash/", headers=headers, json=dictionary)
-    # json = response.json()
-    # print(response.text)
-    # return json
+    response = requests.post(
+        f"{base_url}dash/", headers=headers, json=dictionary)
+    json = response.json()
+    print(response.text)
+    return json
 
-# def carry(name):
-#     response = request.post(f"{base_url}carry/", headers=headers, json= {"name": name})
-# json = response.json()
-# print(response.text)
-# return json
+def carry(name):
+    response = request.post(
+        f"{base_url}carry/", headers=headers, json= {"name": name})
+    json = response.json()
+    print(response.text)
+    return json
 
-# def receive():
-#   response = request.post(f"{base_url}receive/, headers=headers)
-# json = response.json()
-# print(response.text)
-# return json
+def receive():
+    response = request.post(
+        f"{base_url}receive/", headers=headers)
+    json = response.json()
+    print(response.text)
+    return json
 
 
 def warp():
-    response = request.post(f"{base_url}warp/", headers=headers)
+    response = request.post(
+        f"{base_url}warp/", headers=headers)
     json = response.json()
     print(response.text)
     return json
 
 
 def recall():
-    response = request.post(f"{base_url}recall/", headers=headers)
+    response = request.post(
+        f"{base_url}recall/", headers=headers)
     json = response.json()
     print(response.text)
     return json
