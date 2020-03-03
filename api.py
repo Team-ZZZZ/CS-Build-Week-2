@@ -77,6 +77,13 @@ def examine(name):
     print(response.text)
     return json
 
+def sell_item(item_name):
+    response = requests.post(
+        f"{base_url}sell/", headers=headers,json={"name": item_name, "confirm": "yes"})
+    json = response.json()
+    print(response.text)
+    return json
+
 
 def pray():
     response = request.post(
@@ -143,3 +150,4 @@ def recall():
     json = response.json()
     print(response.text)
     return json
+
