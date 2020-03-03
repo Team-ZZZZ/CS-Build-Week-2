@@ -12,8 +12,8 @@ headers = {
 
 def init():
     response = requests.get(f"{base_url}init/", headers=headers)
-    json = response.json()
     print(response.text)
+    json = response.json()
     return json
 
 
@@ -21,20 +21,20 @@ def move(direction, next_room_id=None):
     dictionary = {"direction": direction}
 
     if next_room_id:
-        dictionary["next_room_id"] = next_room_id
+        dictionary["next_room_id"] = str(next_room_id)
 
     response = requests.post(
         f"{base_url}move/", headers=headers, json=dictionary)
-    json = response.json()
     print(response.text)
+    json = response.json()
     return json
 
 
 def take_item(item_name):
     response = requests.post(
         f"{base_url}take/", headers=headers, json={"name": item_name})
-    json = response.json()
     print(response.text)
+    json = response.json()
     return json
 
 
