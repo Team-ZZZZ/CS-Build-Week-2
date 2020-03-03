@@ -89,7 +89,7 @@ def undress_item(item_name):
 
 def change_name(name):
     response = requests.post(
-        f"{base_url}change_name/", headers=headers, json={"name": name})
+        f"{base_url}change_name/", headers=headers, json={"name": name, "confirm": "aye"})
     print(response.text)
     json = response, json()
     return json
