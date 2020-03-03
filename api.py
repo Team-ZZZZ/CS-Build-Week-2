@@ -4,6 +4,7 @@ from dotenv import load_dotenv
 
 load_dotenv()
 base_url = "https://lambda-treasure-hunt.herokuapp.com/api/adv/"
+bc_base_url = "https://lambda-treasure-hunt.herokuapp.com/api/bc/"
 
 headers = {
     "Authorization": f"Token {os.getenv('API_KEY')}"
@@ -46,9 +47,25 @@ def drop_item(item_name):
     return json
 
 
+def sell_item(item_name):
+    response = requests.post(
+        f"{base_url}sell/", headers=headers,json={"name": item_name, "confirm": "yes"})
+    json = response.json()
+    print(response.text)
+    return json
+
+
 def status():
     response = requests.post(
         f"{base_url}status/", headers=headers)
+    json = response.json()
+    print(response.text)
+    return json
+
+
+def examine(name):
+    response = requests.post(
+        f"{base_url}examine/", headers=headers, json={"name": name})
     json = response.json()
     print(response.text)
     return json
@@ -70,17 +87,10 @@ def undress_item(item_name):
     return json
 
 
-def examine(name):
+def change_name(name):
     response = requests.post(
-        f"{base_url}examine/", headers=headers, json={"name": name})
-    json = response.json()
-    print(response.text)
-    return json
-
-def sell_item(item_name):
-    response = requests.post(
-        f"{base_url}sell/", headers=headers,json={"name": item_name, "confirm": "yes"})
-    json = response.json()
+        f"{base_url}change_name/", headers=headers, json={"name": name})
+    json = response, json()
     print(response.text)
     return json
 
@@ -93,20 +103,13 @@ def pray():
     return json
 
 
-def change_name(name):
-    response = requests.post(
-        f"{base_url}change_name/", headers=headers, json={"name": name})
-    json = response, json()
-    print(response.text)
-    return json
-
-
 def fly(direction):
     response = request.post(
         f"{base_url}fly/", headers=headers, json={"direction": direction})
     json = response.json()
     print(response.text)
     return json
+
 
 def dash(direction, num_rooms=None, next_room_ids=None):
     dictionary = {"direction": direction}
@@ -121,12 +124,14 @@ def dash(direction, num_rooms=None, next_room_ids=None):
     print(response.text)
     return json
 
+
 def carry(name):
     response = request.post(
         f"{base_url}carry/", headers=headers, json= {"name": name})
     json = response.json()
     print(response.text)
     return json
+
 
 def receive():
     response = request.post(
@@ -151,3 +156,34 @@ def recall():
     print(response.text)
     return json
 
+
+def mine_proof(new_proof):
+    response = request.post(
+        f"{bc_base_url}mine/", headers=headers, json={"proof": new_proof})
+    json = response.json()
+    print(response.text)
+    return json
+
+
+def last_proof():
+    response = request.get(
+        f"{bc_base_url}last_proof/", headers=headers)
+    json = response.json()
+    print(response.text)
+    return json
+
+
+def get_balance():
+    response = request.get(
+        f"{bc_base_url}get_balance/", headers=headers)
+    json = response.json()
+    print(response.text)
+    return json
+
+
+def transmogrify(item_name):
+    response = request.post(
+        f"{base_url}transmogrify/", headers=headers, json={"name": item_name})
+    json = response.json()
+    print(response.text)
+    return json
