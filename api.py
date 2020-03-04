@@ -234,7 +234,7 @@ def navigate_to(target_room_id):
         direction = list(current_room_exits.keys())[list(current_room_exits.values()).index(int(room_id))]
         traversal_path.append((direction, room_id))
         current_room_exits = map[str(room_id)]["exits"]
-    
+
     for path in traversal_path:
         response = move(path[0], path[1])
         print(f"Waiting {response['cooldown']} second(s).")
@@ -258,5 +258,8 @@ def navigate_to_linh_shrine():
 def navigate_to_donut_shop():
     navigate_to(15)
 
+def navigate_to_wishing_well():
+    navigate_to(55)
+
 if __name__ == "__main__":
-    # navigate
+    navigate_to_wishing_well()
