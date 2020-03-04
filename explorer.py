@@ -38,12 +38,13 @@ class Explorer:
                     break
 
         # We're only done after we've visited all rooms.
-        while num_visited_rooms < num_rooms:
+        while backtracking.size() > 0:
             print(f"Waiting {cooldown} second(s).")
             time.sleep(cooldown)
+            ignored_items = ["tiny treasure", "small treasure", "shiny treasure", "great treasure"]
 
             for item_name in response["items"]:
-                if item_name == "tiny treasure" or item_name == "small treasure":
+                if item_name in ignored_items:
                     continue
 
                 item_response = api.take_item(item_name)
