@@ -1,6 +1,9 @@
 import requests
 import os
+import json
+import time
 from dotenv import load_dotenv
+from util import Queue
 
 load_dotenv()
 base_url = "https://lambda-treasure-hunt.herokuapp.com/api/adv/"
@@ -9,6 +12,17 @@ bc_base_url = "https://lambda-treasure-hunt.herokuapp.com/api/bc/"
 headers = {
     "Authorization": f"Token {os.getenv('API_KEY')}"
 }
+
+map = {}
+
+with open("map.json", "r") as f:
+    map = {}
+
+    with open("map.json", "r") as f:
+        try:
+            map = json.loads(f.read())
+        except:
+            pass
 
 
 def init():
@@ -49,7 +63,7 @@ def drop_item(item_name):
 
 def sell_item(item_name):
     response = requests.post(
-        f"{base_url}sell/", headers=headers,json={"name": item_name, "confirm": "yes"})
+        f"{base_url}sell/", headers=headers, json={"name": item_name, "confirm": "yes"})
     print(response.text)
     json = response.json()
     return json
@@ -127,7 +141,7 @@ def dash(direction, num_rooms=None, next_room_ids=None):
 
 def carry(name):
     response = request.post(
-        f"{base_url}carry/", headers=headers, json= {"name": name})
+        f"{base_url}carry/", headers=headers, json={"name": name})
     print(response.text)
     json = response.json()
     return json
@@ -187,3 +201,62 @@ def transmogrify(item_name):
     print(response.text)
     json = response.json()
     return json
+
+def navigate_to(target_room_id):
+    init_response = init()
+    print(f"Waiting {init_response['cooldown']} second(s).")
+    time.sleep(init_response["cooldown"])
+
+    current_room_id = str(init_response["room_id"])
+    target_room_id = str(target_room_id)
+
+    visited = {}
+    queue = Queue()
+    queue.enqueue([current_room_id])
+
+    while queue.size() > 0:
+        path = queue.dequeue()
+        last_room_id = str(path[-1])
+        exits = map[last_room_id]["available_exits"]
+
+        if last_room_id not in visited:
+            visited[last_room_id] = path
+
+            for exit in exits:
+                queue.enqueue(path.copy() + [str(map[last_room_id]["exits"][exit])])
+
+    room_id_path = visited[target_room_id][1:]
+    traversal_path = []
+
+    current_room_exits = map[current_room_id]["exits"]
+
+    for room_id in room_id_path:
+        direction = list(current_room_exits.keys())[list(current_room_exits.values()).index(int(room_id))]
+        traversal_path.append((direction, room_id))
+        current_room_exits = map[str(room_id)]["exits"]
+    
+    for path in traversal_path:
+        response = move(path[0], path[1])
+        print(f"Waiting {response['cooldown']} second(s).")
+        time.sleep(response["cooldown"])
+
+def navigate_to_shop():
+    navigate_to(1)
+
+def navigate_to_pirate():
+    navigate_to(467)
+
+def navigate_to_holloway_shrine():
+    navigate_to(22)
+
+def navigate_to_fully_shrine():
+    navigate_to(22)
+
+def navigate_to_linh_shrine():
+    navigate_to(461)
+
+def navigate_to_donut_shop():
+    navigate_to(15)
+
+if __name__ == "__main__":
+    # navigate
